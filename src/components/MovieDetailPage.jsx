@@ -1,12 +1,13 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-
 const MovieDetailPage = () => {
     const { movieId } = useParams();
     const navigate = useNavigate();
+
     const movieDataString = import.meta.env.VITE_MOVIE_DATA; 
     let MovieData = [];
+
     try {
         if (movieDataString) {
             MovieData = JSON.parse(movieDataString);
@@ -18,9 +19,11 @@ const MovieDetailPage = () => {
         console.error("5. ERROR during JSON.parse:", error);
     }
 
-    
-    const movie = MovieData.find(m => m.imdbID === movieId);
-  
+    console.log("movieId from URL param:", movieId);
+    console.log("MovieData array:", MovieData);
+
+    // Safer matching with lowercase just in case
+    const movie = MovieData.find(m => m.imdbID.toLowerCase() === movieId?.toLowerCase());
 
     if (!movie) {
         return (
@@ -30,6 +33,7 @@ const MovieDetailPage = () => {
             </div>
         );
     }
+
     const renderOmdbStars = (imdbRating) => {
         if (!imdbRating || imdbRating === 'N/A') return 'N/A';
         const ratingValue = parseFloat(imdbRating.split('/')[0]);

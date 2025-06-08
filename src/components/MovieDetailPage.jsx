@@ -2,25 +2,25 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 
-
 const MovieDetailPage = () => {
     const { movieId } = useParams();
     const navigate = useNavigate();
-
-    const movieDataString = process.env.REACT_APP_MOVIE_DATA;
-
-   
+    const movieDataString = import.meta.env.VITE_MOVIE_DATA; 
     let MovieData = [];
     try {
         if (movieDataString) {
             MovieData = JSON.parse(movieDataString);
+            
+        } else {
+            console.warn("4. VITE_MOVIE_DATA is undefined or empty!");
         }
     } catch (error) {
-        console.error("Error parsing movie data from environment variable:", error);
-       
+        console.error("5. ERROR during JSON.parse:", error);
     }
 
+    
     const movie = MovieData.find(m => m.imdbID === movieId);
+  
 
     if (!movie) {
         return (
@@ -30,7 +30,6 @@ const MovieDetailPage = () => {
             </div>
         );
     }
-
     const renderOmdbStars = (imdbRating) => {
         if (!imdbRating || imdbRating === 'N/A') return 'N/A';
         const ratingValue = parseFloat(imdbRating.split('/')[0]);
@@ -79,9 +78,7 @@ const MovieDetailPage = () => {
                 <p style={{color:'red'}}>Watch Movie Online</p>
 
                 {movie.drive_link && (
-
                     <div className="video-player-wrapper mt-4">
-
                         <iframe
                             src={movie.drive_link}
                             title={movie.Title}
@@ -90,21 +87,19 @@ const MovieDetailPage = () => {
                             allowFullScreen
                             className="movie-iframe"
                         ></iframe>
-
                     </div>
                 )}
 
-                    <div className="text-center mt-4">
-                        <a
-                            href={movie.download_link}
-                            className="btn download-button"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Download Movie
-                        </a>
-                    </div>
-
+                <div className="text-center mt-4">
+                    <a
+                        href={movie.download_link}
+                        className="btn download-button"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Download Movie
+                    </a>
+                </div>
             </div>
         </div>
     );

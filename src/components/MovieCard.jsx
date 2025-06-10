@@ -11,7 +11,7 @@ const MovieCard = ({ movie, onClick }) => {
         style={{ cursor: 'pointer' }}
       >
       
-        <img src={movie.Poster} className="card-img-top movie-poster" alt={movie.Title} />
+        <img src={movie.Poster} style={{height:'65vh'}} className="card-img-top movie-poster" alt={movie.Title} />
         <div className="card-body movie-info">
           <h5 className="card-title">{movie.Title}</h5>
        
